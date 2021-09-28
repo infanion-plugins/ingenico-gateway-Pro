@@ -1,0 +1,412 @@
+{% extends parentLayout ?? '_layouts/cp' %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("ipcraft\\ingenicogatewaypro\\assetbundles\\ingenicogatewaypro\\IngenicoGatewayProAsset") %}
+{% if data.configId == '' %}
+{% set title = 'Add configuration'%}
+{% else %} 
+{% set title = 'Update configuration'%}
+{% endif %}
+{% set crumbs = [
+    { label: 'Manage Ingenico configurations' | t('ingenico-gateway-pro'), url: url('ingenico-gateway-pro/configuration') }
+] %}
+{% block header %}
+  <div class="flex flex-nowrap">
+    {{ block('pageTitle') }}
+    {{ block('contextMenu') }}
+  </div>
+  <div class="flex">
+    {{ block('actionButton') }}
+  </div>
+{% endblock %}
+
+{% set currency = [] %}
+{% set currency = currency|merge([{label: 'Choose a currency…'|t('app'), value: ''},]) %}
+{% set currency = currency|merge([
+                    {label: 'AFN', value: 'AFN'},
+                    {label: 'EUR', value: 'EUR'},
+                    {label: 'ALL', value: 'ALL'},
+                    {label: 'DZD', value: 'DZD'},
+                    {label: 'USD', value: 'USD'},
+                    {label: 'AOA', value: 'AOA'},
+                    {label: 'XCD', value: 'XCD'},
+                    {label: 'ARS', value: 'ARS'},
+                    {label: 'AMD', value: 'AMD'},
+                    {label: 'AWG', value: 'AWG'},
+                    {label: 'AUD', value: 'AUD'},
+                    {label: 'AZN', value: 'AZN'},
+                    {label: 'BSD', value: 'BSD'},
+                    {label: 'BHD', value: 'BHD'},
+                    {label: 'BDT', value: 'BDT'},
+                    {label: 'BBD', value: 'BBD'},
+                    {label: 'BYN', value: 'BYN'},
+                    {label: 'BYR', value: 'BYR'},
+                    {label: 'BZD', value: 'BZD'},
+                    {label: 'XOF', value: 'XOF'},
+                    {label: 'BMD', value: 'BMD'},
+                    {label: 'INR', value: 'INR'},
+                    {label: 'BTN', value: 'BTN'},
+                    {label: 'BOB', value: 'BOB'},
+                    {label: 'BOV', value: 'BOV'},
+                    {label: 'BAM', value: 'BAM'},
+                    {label: 'BWP', value: 'BWP'},
+                    {label: 'NOK', value: 'NOK'},
+                    {label: 'BRL', value: 'BRL'},
+                    {label: 'BND', value: 'BND'},
+                    {label: 'BGN', value: 'BGN'},
+                    {label: 'BIF', value: 'BIF'},
+                    {label: 'CVE', value: 'CVE'},
+                    {label: 'KHR', value: 'KHR'},
+                    {label: 'XAF', value: 'XAF'},
+                    {label: 'CAD', value: 'CAD'},
+                    {label: 'KYD', value: 'KYD'},
+                    {label: 'CLP', value: 'CLP'},
+                    {label: 'CLF', value: 'CLF'},
+                    {label: 'CNY', value: 'CNY'},
+                    {label: 'COP', value: 'COP'},
+                    {label: 'COU', value: 'COU'},
+                    {label: 'KMF', value: 'KMF'},
+                    {label: 'CDF', value: 'CDF'},
+                    {label: 'NZD', value: 'NZD'},
+                    {label: 'CRC', value: 'CRC'},
+                    {label: 'HRK', value: 'HRK'},
+                    {label: 'CUP', value: 'CUP'},
+                    {label: 'CUC', value: 'CUC'},
+                    {label: 'ANG', value: 'ANG'},
+                    {label: 'CZK', value: 'CZK'},
+                    {label: 'DKK', value: 'DKK'},
+                    {label: 'DJF', value: 'DJF'},
+                    {label: 'DOP', value: 'DOP'},
+                    {label: 'EGP', value: 'EGP'},
+                    {label: 'SVC', value: 'SVC'},
+                    {label: 'ERN', value: 'ERN'},
+                    {label: 'ETB', value: 'ETB'},
+                    {label: 'FKP', value: 'FKP'},
+                    {label: 'FJD', value: 'FJD'},
+                    {label: 'XPF', value: 'XPF'},
+                    {label: 'GMD', value: 'GMD'},
+                    {label: 'GEL', value: 'GEL'},
+                    {label: 'GHS', value: 'GHS'},
+                    {label: 'GIP', value: 'GIP'},
+                    {label: 'GTQ', value: 'GTQ'},
+                    {label: 'GBP', value: 'GBP'},
+                    {label: 'GNF', value: 'GNF'},
+                    {label: 'GYD', value: 'GYD'},
+                    {label: 'HTG', value: 'HTG'},
+                    {label: 'HNL', value: 'HNL'},
+                    {label: 'HKD', value: 'HKD'},
+                    {label: 'HUF', value: 'HUF'},
+                    {label: 'ISK', value: 'ISK'},
+                    {label: 'IDR', value: 'IDR'},
+                    {label: 'XDR', value: 'XDR'},
+                    {label: 'IRR', value: 'IRR'},
+                    {label: 'IQD', value: 'IQD'},
+                    {label: 'ILS', value: 'ILS'},
+                    {label: 'JMD', value: 'JMD'},
+                    {label: 'JPY', value: 'JPY'},
+                    {label: 'JOD', value: 'JOD'},
+                    {label: 'KZT', value: 'KZT'},
+                    {label: 'KES', value: 'KES'},
+                    {label: 'KPW', value: 'KPW'},
+                    {label: 'KRW', value: 'KRW'},
+                    {label: 'KWD', value: 'KWD'},
+                    {label: 'KGS', value: 'KGS'},
+                    {label: 'LAK', value: 'LAK'},
+                    {label: 'LBP', value: 'LBP'},
+                    {label: 'LSL', value: 'LSL'},
+                    {label: 'ZAR', value: 'ZAR'},
+                    {label: 'LRD', value: 'LRD'},
+                    {label: 'LYD', value: 'LYD'},
+                    {label: 'CHF', value: 'CHF'},
+                    {label: 'MOP', value: 'MOP'},
+                    {label: 'MKD', value: 'MKD'},
+                    {label: 'MGA', value: 'MGA'},
+                    {label: 'MWK', value: 'MWK'},
+                    {label: 'MYR', value: 'MYR'},
+                    {label: 'MVR', value: 'MVR'},
+                    {label: 'MRO', value: 'MRO'},
+                    {label: 'MUR', value: 'MUR'},
+                    {label: 'XUA', value: 'XUA'},
+                    {label: 'MXN', value: 'MXN'},
+                    {label: 'MXV', value: 'MXV'},
+                    {label: 'MDL', value: 'MDL'},
+                    {label: 'MNT', value: 'MNT'},
+                    {label: 'MAD', value: 'MAD'},
+                    {label: 'MZN', value: 'MZN'},
+                    {label: 'MMK', value: 'MMK'},
+                    {label: 'NAD', value: 'NAD'},
+                    {label: 'NPR', value: 'NPR'},
+                    {label: 'NIO', value: 'NIO'},
+                    {label: 'NGN', value: 'NGN'},
+                    {label: 'OMR', value: 'OMR'},
+                    {label: 'PKR', value: 'PKR'},
+                    {label: 'PAB', value: 'PAB'},
+                    {label: 'PGK', value: 'PGK'},
+                    {label: 'PYG', value: 'PYG'},
+                    {label: 'PEN', value: 'PEN'},
+                    {label: 'PHP', value: 'PHP'},
+                    {label: 'PLN', value: 'PLN'},
+                    {label: 'QAR', value: 'QAR'},
+                    {label: 'RON', value: 'RON'},
+                    {label: 'RUB', value: 'RUB'},
+                    {label: 'RWF', value: 'RWF'},
+                    {label: 'SHP', value: 'SHP'},
+                    {label: 'WST', value: 'WST'},
+                    {label: 'STD', value: 'STD'},
+                    {label: 'SAR', value: 'SAR'},
+                    {label: 'RSD', value: 'RSD'},
+                    {label: 'SCR', value: 'SCR'},
+                    {label: 'SLL', value: 'SLL'},
+                    {label: 'SGD', value: 'SGD'},
+                    {label: 'XSU', value: 'XSU'},
+                    {label: 'SBD', value: 'SBD'},
+                    {label: 'SOS', value: 'SOS'},
+                    {label: 'SSP', value: 'SSP'},
+                    {label: 'LKR', value: 'LKR'},
+                    {label: 'SDG', value: 'SDG'},
+                    {label: 'SRD', value: 'SRD'},
+                    {label: 'SZL', value: 'SZL'},
+                    {label: 'SEK', value: 'SEK'},
+                    {label: 'CHE', value: 'CHE'},
+                    {label: 'CHW', value: 'CHW'},
+                    {label: 'SYP', value: 'SYP'},
+                    {label: 'TWD', value: 'TWD'},
+                    {label: 'TJS', value: 'TJS'},
+                    {label: 'TZS', value: 'TZS'},
+                    {label: 'THB', value: 'THB'},
+                    {label: 'TOP', value: 'TOP'},
+                    {label: 'TTD', value: 'TTD'},
+                    {label: 'TND', value: 'TND'},
+                    {label: 'TRY', value: 'TRY'},
+                    {label: 'TMT', value: 'TMT'},
+                    {label: 'UGX', value: 'UGX'},
+                    {label: 'UAH', value: 'UAH'},
+                    {label: 'AED', value: 'AED'},
+                    {label: 'USN', value: 'USN'},
+                    {label: 'UYU', value: 'UYU'},
+                    {label: 'UYI', value: 'UYI'},
+                    {label: 'UZS', value: 'UZS'},
+                    {label: 'VUV', value: 'VUV'},
+                    {label: 'VEF', value: 'VEF'},
+                    {label: 'VND', value: 'VND'},
+                    {label: 'YER', value: 'YER'},
+                    {label: 'ZMW', value: 'ZMW'},
+                    {label: 'ZWL', value: 'ZWL'},
+                    {label: 'XBA', value: 'XBA'},
+                    {label: 'XBB', value: 'XBB'},
+                    {label: 'XBC', value: 'XBC'},
+                    {label: 'XBD', value: 'XBD'},
+                    {label: 'XTS', value: 'XTS'},
+                    {label: 'XAU', value: 'XAU'},
+                    {label: 'XPD', value: 'XPD'},
+                    {label: 'XPT', value: 'XPT'},
+                    {label: 'XAG', value: 'XAG'},
+                ]|sort
+  ) %}
+
+{% set languages = [] %}
+{% set languages = languages|merge([{label: 'Choose a language...'|t('app'), value: ''},]) %}
+{% set languages = languages|merge(data.defaultLanguage.options ?? []) %}
+
+{% set formAttributes = {
+    'id': 'templateForm',
+    'method': 'post',
+    'accept-charset': 'UTF-8',
+    'data': {
+        'saveshortcut': true,
+        'saveshortcut-scroll': true,
+        'confirm-unload': true,
+        'delta': true,
+    },
+} %}
+
+{% set content %}
+    {% block blockContent %}
+    <form {{ attr(formAttributes) }}>
+            <input type="hidden" name="configId" value="{{ data.configId ?? '' }}">
+        
+            {{ actionInput('ingenico-gateway-pro/configuration/save') }}
+            {% set csrfParam = craft.app.request.csrfParam %}
+            {% set csrfToken = craft.app.request.csrfToken %}
+            <input type="hidden" name="{{ csrfParam }}" value="{{ csrfToken }}">
+            {{ csrfInput() }}
+        {{ forms.textField({
+            first: true,
+            label: 'Title',
+            id: 'title',
+            name: 'title',
+            rows: '1',
+            value: data.title ?? '',
+            required: true,
+        }) }}
+        <p id="error_msg_title" style="display: none;color:#CF1124">{{'Title cannot be blank'}}</p>
+
+
+        {{ forms.selectField({
+            first: true,
+            label: 'Configuration type',
+            id: 'configType',
+            name: 'configType',
+            rows: '1',
+            required: true,
+            value: data.configType ?? null,
+            options: [
+                    {label: 'Test', value: 'test'},
+                    {label: 'Production', value: 'prod'}
+                ]
+        }) }}
+
+        {{ forms.textField({
+            first: true,
+            label: 'PSPID',
+            id: 'pspid',
+            name: 'pspid',
+            rows: '1',
+            required: true,
+            value: data.pspid ?? '',
+        }) }}
+        <p id="error_msg_pspid" style="display: none;color:#CF1124">{{'PSPID name cannot be blank'}}</p>
+        
+        {{ forms.selectField({
+            first: true,
+            label: 'Default currency',
+            id: 'defaultCurreny',
+            name: 'defaultCurreny',
+            rows: '1',
+            required: true,
+            value: data.defaultCurreny ?? null,
+            options: currency
+        }) }}
+        <p id="error_msg_currency" style="display: none;color:#CF1124">{{'Default currency cannot be blank'}}</p>
+        
+        
+        {{ forms.textField({
+            first: true,
+            label: 'Post payment redirection',
+            id: 'postredirect',
+            name: 'postredirect',
+            rows: '1',
+            required: true,
+            value: data.postredirect ?? '',
+        }) }}
+        <p id="error_msg_postredirect" style="display: none;color:#CF1124">{{'Post payment redirection cannot be blank'}}</p>
+        {{ forms.textField({
+            first: true,
+            label: 'SHA1 AP',
+            id: 'sha1_ap',
+            name: 'sha1_ap',
+            rows: '1',
+            required: true,
+            value: data.sha1_ap ?? '',
+        }) }}
+        <p id="error_msg_sha1_ap" style="display: none;color:#CF1124">{{'SHA1 AP cannot be blank'}}</p>
+        {{ forms.textField({
+            first: true,
+            label: 'SHA1 BP',
+            id: 'sha1_bp',
+            name: 'sha1_bp',
+            rows: '1',
+            required: true,
+            value: data.sha1_bp ?? '',
+        }) }}
+        <p id="error_msg_sha1_bp" style="display: none;color:#CF1124">{{'SHA1 BP cannot be blank'}}</p>
+        
+        <div id="save-btn-container" class="btngroup submit">
+            <button type="submit" id="config-submit" class="btn submit" href="ingenico-gateway-pro/configuration/save" >
+                {{ 'Save' }}
+            </button>
+        </div>
+    </form>
+    {% endblock %}
+
+{% endset %}
+{% js %}
+
+
+$(function() {
+    
+    $('#config-submit').click(function(){
+
+        if($.trim($('#title').val()) == ''){
+            $('#error_msg_title').css("display","block");
+            $("#error_msg_title").prev().addClass('error-wrapper');
+        return false;
+    }
+
+    if($.trim($('#pspid').val()) == ''){
+            $('#error_msg_pspid').css("display","block");
+            $("#error_msg_pspid").prev().addClass('error-wrapper');
+        return false;
+    }
+
+    
+    if($.trim($('#defaultCurreny').val()) == ''){
+        $('#error_msg_currency').css("display","block");
+        $("#error_msg_currency").prev().addClass('error-wrapper');
+    return false;
+    }
+    
+    if($.trim($('#postredirect').val()) == ''){
+        $('#error_msg_postredirect').css("display","block");
+        $("#error_msg_postredirect").prev().addClass('error-wrapper');
+    return false;
+    }
+
+    if($.trim($('#sha1_ap').val()) == ''){
+        $('#error_msg_sha1_ap').css("display","block");
+        $("#error_msg_sha1_ap").prev().addClass('error-wrapper');
+    return false;
+    }
+
+    if($.trim($('#sha1_bp').val()) == ''){
+        $('#error_msg_sha1_bp').css("display","block");
+        $("#error_msg_sha1_bp").prev().addClass('error-wrapper');
+    return false;
+    }
+
+     });
+
+
+    $('#title').focus(function(){
+        $('#error_msg_title').css("display","none");
+        $("#error_msg_title").prev().removeClass('error-wrapper');
+    }
+   );
+
+   $('#pspid').focus(function(){
+        $('#error_msg_pspid').css("display","none");
+        $("#error_msg_pspid").prev().removeClass('error-wrapper');
+    }
+   );
+   $('#defaultCurreny').focus(function(){
+        $('#error_msg_currency').css("display","none");
+        $("#error_msg_currency").prev().removeClass('error-wrapper');
+    }
+   );
+
+   $('#actionUrl').focus(function(){
+        $('#error_msg_action_url').css("display","none");
+        $("#error_msg_action_url").prev().removeClass('error-wrapper');
+    }
+   );
+   $('#postredirect').focus(function(){
+        $('#error_msg_postredirect').css("display","none");
+        $("#error_msg_postredirect").prev().removeClass('error-wrapper');
+    }
+   );
+  
+   $('#sha1_bp').focus(function(){
+        $('#error_msg_sha1_bp').css("display","none");
+        $("#error_msg_sha1_bp").prev().removeClass('error-wrapper');
+    }
+   );
+
+   $('#sha1_ap').focus(function(){
+        $('#error_msg_sha1_ap').css("display","none");
+        $("#error_msg_sha1_ap").prev().removeClass('error-wrapper');
+    }
+   );
+ 
+});
+
+{% endjs %}

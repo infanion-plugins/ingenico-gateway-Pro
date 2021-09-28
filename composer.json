@@ -1,0 +1,53 @@
+{
+    "name": "ip-craft/ingenico-gateway-pro",
+    "description": "Setup and use Ingenico payments in an easy way on your Craft website/Commerce for a smooth, enhanced customer experience",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "ingenico gateway pro"
+    ],
+    "support": {
+        "email": "support-craftplugins@infanion.com",
+        "source": "https://github.com/infanion-plugins/ingenico-gateway-Pro",
+        "docs": "https://github.com/infanion-plugins/ingenico-gateway-Pro/blob/master/README.md",
+        "issues": "https://github.com/infanion-plugins/ingenico-gateway-Pro/issues"
+    },
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Infanion",
+            "homepage": "https://www.infanion.com/"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0"
+    },
+    "require-dev": {
+      "craftcms/cms": "^3.2.0",
+      "codeception/codeception": "^3.0",
+      "vlucas/phpdotenv": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "ipcraft\\ingenicogatewaypro\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Ingenico gateway Pro",
+        "handle": "ingenico-gateway-pro",
+        "developer": "Infanion",
+        "developerUrl": "https://www.infanion.com/",
+        "documentationUrl": "https://github.com/infanion-plugins/ingenico-gateway-Pro/blob/master/README.md",
+        "changelogUrl": "https://github.com/infanion-plugins/ingenico-gateway-Pro/blob/master/CHANGELOG.md",
+        "components": {
+            "ingenicoGatewayProService": "ipcraft\\ingenicogatewaypro\\services\\IngenicoGatewayProService",
+            "afterPaymentService": "ipcraft\\ingenicogatewaypro\\services\\AfterPaymentService",
+            "ingenicoLogService": "ipcraft\\ingenicogatewaypro\\services\\IngenicoLogService"
+        },
+        "class": "ipcraft\\ingenicogatewaypro\\IngenicoGatewayPro"
+    }
+}

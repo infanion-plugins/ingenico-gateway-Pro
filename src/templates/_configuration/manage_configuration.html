@@ -1,0 +1,84 @@
+{% extends parentLayout ?? '_layouts/cp' %}
+{% import '_includes/forms' as forms %}
+{% set deleteiconUrl = view.getAssetManager().getPublishedUrl('@ipcraft/ingenicogatewaypro/assetbundles/ingenicogatewaypro/dist', true) ~ '/img/delete-icon.svg' %}
+{% set editiconUrl = view.getAssetManager().getPublishedUrl('@ipcraft/ingenicogatewaypro/assetbundles/ingenicogatewaypro/dist', true) ~ '/img/edit.svg' %}
+{% do view.registerAssetBundle("ipcraft\\ingenicogatewaypro\\assetbundles\\ingenicogatewaypro\\IngenicoGatewayProAsset") %}
+{% set title = 'Manage Ingenico configurations'%}
+{% block header %}
+  <div class="flex flex-nowrap">
+    {{ block('pageTitle') }}
+    {{ block('contextMenu') }}
+  </div>
+  <div class="flex">
+    {{ block('actionButton') }}
+  </div>
+{% endblock %}
+
+{% block actionButton %}
+{% if currentUser.can('manageConfiguration') %}
+    <div id="save-btn-container" class="btngroup submit">
+            {% if count < 3 %}
+        <a class="btn submit add icon" href="{{ url('ingenico-gateway-pro/new-configuration') }}">{{ "New Configuration"}}</a>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% set content %}
+{% block blockContent %}
+        <table id="records_table" border='1' width="100%" class="paginated">
+                <thead class="trans_table_head">
+                    <tr>
+                        <th>{{'Name'}}</th>
+                        <th>{{'Type'}}</th>
+                        <th>{{'Status'}}</th>
+                        {% if currentUser.can('manageConfiguration') %}
+                        <th>{{'Activate/Deactivate'}}</th>
+                        <th>{{'Actions'}}</th> 
+                        {% endif %}               
+                    </tr>
+                </thead>
+                {% for res in results %}
+                    <tbody>
+                        <tr class="mouse-hover"><td>{{res['title']}}</td>
+                            <td>
+                                {% if res['configType'] == 'test' %}
+                                {{'Test'}}
+                                {% else %}
+                                {{'Production'}}
+                                {% endif %}
+                            </td>
+                            {% if res['status'] == 1 %}
+                            <td>{{'Active'}}</td>
+                            {% else %}
+                            <td>{{'Inactive'}}</td>
+                            {% endif %}
+                            {% if currentUser.can('manageConfiguration') %}
+                            {% if res['status'] == 1 %}
+                            <td><a href="update-status?id={{res['id']}}" onclick= "return confirm('Are you sure do you want to Deactivate?')" >{{'Deactivate'}}</a></td>
+                            {% else %}
+                            <td><a href="update-status?id={{res['id']}}" onclick= "return confirm('Are you sure do you want to Activate?')" >{{'Activate'}}</a></td>
+                            {% endif %}
+                            
+                            <td>
+                                <span class="delete-icon-center">
+                                    <a href="update?id={{res['id']}}"  title="Edit" role="button">
+                                        <img src="{{editiconUrl}}" width="15" height="15">
+                                    </a>
+                                </span>
+                                <span class="delete-icon-center">
+                                    <a href="remove?id={{res['id']}}" onclick="return confirm('Are you sure do you want to remove?')" data-v-17492936="" title="Delete" role="button" href="#" data-v-23911c86="">
+                                        <img src="{{deleteiconUrl}}" width="15" height="15">
+                                    </a>
+                                </span>
+  
+                            </td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                {% endfor %}
+        </table>
+  
+    
+{% endblock %}
+{% endset %}

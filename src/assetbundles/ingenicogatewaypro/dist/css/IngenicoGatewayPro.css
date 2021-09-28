@@ -1,0 +1,29 @@
+/**
+ * Ingenico gateway Pro plugin for Craft CMS
+ *
+ * Ingenico gateway Pro CSS
+ *
+ * @author    Infanion
+ * @copyright Copyright (c) 2021 Infanion
+ * @link      https://www.infanion.com/
+ * @package   IngenicoGatewayPro
+ * @since     1.0.0
+ */
+
+ .test_btn{
+     width:10%;
+     background-color: darkgray;
+     padding: 7px;
+   
+ }
+ .error-wrapper {
+    margin-bottom: 0px !important;
+ }
+
+ .mouse-hover:hover{
+     background-color: rgb(228, 227, 227);
+ }
+
+ tr{
+     padding: 5px;
+ }

@@ -1,0 +1,29 @@
+{% extends parentLayout ?? '_layouts/cp' %}
+
+{% set pluginCpUrl = url('ingenico-gateway-pro') %}
+
+{% do view.registerAssetBundle("ipcraft\\ingenicogatewaypro\\assetbundles\\ingenicogatewaypro\\IngenicoGatewayProAsset") %}
+{% do view.registerAssetBundle("ipcraft\\ingenicogatewaypro\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{% block header %}
+  <div class="flex flex-nowrap">
+    {{ block('pageTitle') }}
+    {{ block('contextMenu') }}
+  </div>
+  <div>
+    {{ block('actionButton') }}
+  </div>
+{% endblock %}
+
+{% block actionButton %}
+    <div id="save-btn-container" class="btngroup submit">
+        <a class="btn submit add icon" href="{{ url('ingenico-gateway-pro/new-configuration') }}">{{ "New Configuration"}}</a>
+    </div>
+{% endblock %}
+
+{% set content %}
+    {% block blockContent %}
+    
+    {% endblock %}
+
+{% endset %}

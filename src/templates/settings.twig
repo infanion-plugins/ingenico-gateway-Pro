@@ -1,0 +1,107 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Ingenico gateway Pro plugin for Craft CMS 3.x
+ *
+ * Ingenico gateway Pro Settings.twig
+ *
+ * @author    Infanion
+ * @copyright Copyright (c) 2021 Infanion
+ * @link      https://www.infanion.com/
+ * @package   IngenicoGatewayPro
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("ipcraft\\ingenicogatewaypro\\assetbundles\\ingenicogatewaypro\\IngenicoGatewayProAsset") %}
+{% set otherLocales = craft.i18n.getSiteLocaleIds() %}
+{% set localeData = craft.i18n.getLocaleData() %}
+{% set currencyIso = 'USD' %}
+
+{{ localeData.getCurrencySymbol(currencyIso)  }}
+{# {{ forms.textField({
+    label: 'Some Field',
+    instructions: 'Enter some setting here.',
+    id: 'someAttribute',
+    name: 'someAttribute',
+    value: settings['someAttribute']})
+}} #}
+
+        {{ forms.textField({
+            first: true,
+            label: 'Title',
+            id: 'title',
+            name: 'title',
+            rows: '1',
+            value: settings['title'],
+            required: true,
+        }) }}
+
+        {{ forms.textField({
+            first: true,
+            label: 'PSPID',
+            id: 'pspid',
+            name: 'pspid',
+            rows: '1',
+            required: true,
+            value: settings['pspid'],
+        }) }}
+   
+        {{ forms.textField({
+            first: true,
+            label: 'Merchant email address',
+            id: 'merchantemail',
+            name: 'merchantemail',
+            rows: '1',
+            required: true,
+            value: settings['merchantemail'],
+        }) }}
+   
+        {{ forms.textField({
+            first: true,
+            label: 'Default currency',
+            id: 'defaultcurreny',
+            name: 'defaultcurreny',
+            rows: '1',
+            required: true,
+            value: settings['defaultcurreny'],
+        }) }}
+    
+        {{ forms.multiselectField({
+            first: true,
+            label: 'Default language',
+            id: 'defaultlang',
+            name: 'defaultlang',
+            rows: '1',
+            values: data.tokens.values ?? [],
+            options: otherLocales,
+            required: true,
+            value: settings['defaultlang'],
+        }) }}
+
+        {{ forms.textField({
+            first: true,
+            label: 'Post payment redirection',
+            id: 'postredirect',
+            name: 'postredirect',
+            rows: '1',
+            required: true,
+            value: settings['postredirect'],
+        }) }}
+
+        {{ forms.textField({
+            first: true,
+            label: 'Security settings(SHA1)',
+            id: 'sha1',
+            name: 'sha1',
+            rows: '1',
+            required: true,
+            value: settings['sha1'],
+        }) }}
+    
+
+{# <div>
+    <a href="http://modular-backend.local/admin/ingenico-gateway-pro/testing/test" class="test_btn">Test</a>
+</div> #}
